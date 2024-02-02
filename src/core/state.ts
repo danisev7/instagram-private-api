@@ -64,7 +64,7 @@ export class State {
   language: string = 'en_US';
   timezoneOffset: string = String(new Date().getTimezoneOffset() * -60);
   radioType = 'wifi-none';
-  capabilitiesHeader = '3brTvwE=';
+  capabilitiesHeader = '3brTvx0=';
   connectionTypeHeader = 'WIFI';
   isLayoutRTL: boolean = false;
   euDCEnabled?: boolean = undefined;
@@ -118,7 +118,9 @@ export class State {
   }
 
   public get appUserAgent() {
-    return `Instagram ${this.appVersion} Android (${this.deviceString}; ${this.language}; ${this.appVersionCode})`;
+    // return `Instagram ${this.appVersion} Android (${this.deviceString}; ${this.language}; ${this.appVersionCode})`;
+    // TODO: update user agent dinamically
+    return `Instagram 208.0.0.32.135 (iPhone; iOS 14_7_1; en_US; en-US; scale=2.61; 1080x1920) AppleWebKit/605.1.15`;
   }
 
   public get webUserAgent() {
@@ -226,7 +228,7 @@ export class State {
     const obj = typeof state === 'string' ? JSON.parse(state) : state;
     if (typeof obj !== 'object') {
       State.stateDebug(`State deserialization failed, obj is of type ${typeof obj} (object expected)`);
-      throw new TypeError('State isn\'t an object or serialized JSON');
+      throw new TypeError("State isn't an object or serialized JSON");
     }
     State.stateDebug(`Deserializing ${Object.keys(obj).join(', ')}`);
     if (obj.constants) {

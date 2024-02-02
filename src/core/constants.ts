@@ -12,7 +12,7 @@ export const FACEBOOK_OTA_FIELDS =
   'update%7Bdownload_uri%2Cdownload_uri_delta_base%2Cversion_code_delta_base%2Cdownload_uri_delta%2Cfallback_to_full_update%2Cfile_size_delta%2Cversion_code%2Cpublished_date%2Cfile_size%2Cota_bundle_type%2Cresources_checksum%2Callowed_networks%2Crelease_id%7D';
 export const FACEBOOK_ORCA_APPLICATION_ID = '124024574287414';
 
-export const BLOKS_VERSION_ID = '7b2216598d8fcf84fbda65652788cb12be5aa024c4ea5e03deeb2b81a383c9e0';
+export const BLOKS_VERSION_ID = 'ce555e5500576acd8e84a66018f54a05720f2dce29f0bb5a1f97f0c10d6fac48';
 
 export const HOSTNAME = 'i.instagram.com';
 export const WEB_HOSTNAME = 'www.instagram.com';

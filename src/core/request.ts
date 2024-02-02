@@ -20,6 +20,7 @@ import {
 } from '../errors';
 import { IgResponse } from '../types';
 import JSONbigInt = require('json-bigint');
+import { randomBytes } from 'crypto';
 
 const JSONbigString = JSONbigInt({ storeAsString: true });
 
@@ -181,38 +182,53 @@ export class Request {
   }
 
   public getDefaultHeaders() {
+    let speed = Math.floor(Math.random() * (3000000 - 2500000 + 1)) + 2500000;
+    let totalBytes = Math.floor(Math.random() * (90000000 - 5000000 + 1)) + 5000000;
+    let totalTime = Math.floor(Math.random() * (9000 - 2000 + 1)) + 2000;
+    let salt = Math.floor(Math.random() * (1061262222 - 1061162222 + 1)) + 1061162222;
     return {
       'User-Agent': this.client.state.appUserAgent,
       'X-Ads-Opt-Out': this.client.state.adsOptOut ? '1' : '0',
       // needed? 'X-DEVICE-ID': this.client.state.uuid,
       'X-CM-Bandwidth-KBPS': '-1.000',
-      'X-CM-Latency': '-1.000',
+      'X-CfM-Latency': '-1.000',
       'X-IG-App-Locale': this.client.state.language,
       'X-IG-Device-Locale': this.client.state.language,
+      'X-IG-Mapped-Locale': this.client.state.language,
       'X-Pigeon-Session-Id': this.client.state.pigeonSessionId,
       'X-Pigeon-Rawclienttime': (Date.now() / 1000).toFixed(3),
       'X-IG-Connection-Speed': `${random(1000, 3700)}kbps`,
-      'X-IG-Bandwidth-Speed-KBPS': '-1.000',
-      'X-IG-Bandwidth-TotalBytes-B': '0',
-      'X-IG-Bandwidth-TotalTime-MS': '0',
+      'X-IG-Bandwidth-Speed-KBPS': speed.toString(),
+      'X-IG-Bandwidth-TotalBytes-B': totalBytes.toString(),
+      'X-IG-Bandwidth-TotalTime-MS': totalTime.toString(),
+      'X-IG-App-Startup-Country': 'DE', // TODO: get from device
+      'X-Bloks-Is-Panorama-Enabled': 'true',
       'X-IG-EU-DC-ENABLED':
         typeof this.client.state.euDCEnabled === 'undefined' ? void 0 : this.client.state.euDCEnabled.toString(),
       'X-IG-Extended-CDN-Thumbnail-Cache-Busting-Value': this.client.state.thumbnailCacheBustingValue.toString(),
       'X-Bloks-Version-Id': this.client.state.bloksVersionId,
       'X-MID': this.client.state.extractCookie('mid')?.value,
       'X-IG-WWW-Claim': this.client.state.igWWWClaim || '0',
-      'X-Bloks-Is-Layout-RTL': this.client.state.isLayoutRTL.toString(),
+      'X-Bloks-Is-Layout-RTL': 'false',
       'X-IG-Connection-Type': this.client.state.connectionTypeHeader,
       'X-IG-Capabilities': this.client.state.capabilitiesHeader,
       'X-IG-App-ID': this.client.state.fbAnalyticsApplicationId,
       'X-IG-Device-ID': this.client.state.uuid,
       'X-IG-Android-ID': this.client.state.deviceId,
+      'X-IG-Family-Device-ID': this.client.state.phoneId,
       'Accept-Language': this.client.state.language.replace('_', '-'),
       'X-FB-HTTP-Engine': 'Liger',
       Authorization: this.client.state.authorization,
       Host: 'i.instagram.com',
-      'Accept-Encoding': 'gzip',
-      Connection: 'close',
+      'Accept-Encoding': 'gzip, deflate',
+      Connection: 'keep-alive',
+      Priority: 'u=3',
+      'X-FB-Client-IP': 'True',
+      'X-FB-Server-Cluster': 'True',
+      'IG-INTENDED-USER-ID': '0',
+      'X-IG-Nav-Chain': '9MV:self_profile:2,ProfileMediaTabFragment:self_profile:3,9Xf:self_following:4',
+      'X-IG-SALT-IDS': salt.toString(),
+      // X-IG-Timezone-Offset
     };
   }
 }
